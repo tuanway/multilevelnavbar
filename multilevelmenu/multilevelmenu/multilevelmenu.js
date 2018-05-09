@@ -7,7 +7,7 @@ angular.module('multilevelmenuMultilevelmenu', ['servoy']).directive('multilevel
 				api: "=svyApi",
 				svyServoyapi: "=",
 			},
-			controller: function($scope, $element, $attrs) {
+			controller: function($scope, $element, $attrs) {				
 				$scope.setupMenu = function() {
 					var menu = document.getElementsByClassName('nav navbar-nav')[0];
 					var items = $scope.model.menu
@@ -16,8 +16,11 @@ angular.module('multilevelmenuMultilevelmenu', ['servoy']).directive('multilevel
 					for (var i = 0; i < items.length; i++) {
 						var li = document.createElement("li");
 						var a = document.createElement("a");
+						
+						
 						li.appendChild(a);
 						a.innerHTML = items[i].text;
+							
 						a.id = items[i].itemId;
 						menu.appendChild(li);
 						//if we have subitems
@@ -31,6 +34,23 @@ angular.module('multilevelmenuMultilevelmenu', ['servoy']).directive('multilevel
 							li.appendChild(ul);
 							loop(items[i].menuItems, ul)
 						}
+						
+						var ic = items[i].iconStyleClass==null?'':items[i].iconStyleClass;
+						//if we have an icon style class create div element for icon;
+						if (ic) {
+							a.innerHTML = '<div class="'+ic+'"></div> '+a.innerHTML
+						}
+						
+						//if we have an image
+						if (items[i].imageSrc) {
+							
+							a.innerHTML = '<img class="'+items[i].imageStyleClass+' img-icon" src="'+items[i].imageSrc+'"></img> '+a.innerHTML
+						}
+						
+						//if an item is disabled
+						if(!items[i].enabled){
+							a.setAttribute("class", "disabled");
+						}
 					}
 
 					//setup sub items
@@ -39,12 +59,37 @@ angular.module('multilevelmenuMultilevelmenu', ['servoy']).directive('multilevel
 							var li = document.createElement("li");
 							var a = document.createElement("a");
 							a.innerHTML = arr[i].text;
-							a.id = arr[i].itemId;
+							a.id = arr[i].itemId;													
 							li.appendChild(a);
+							
+							//if we have a seperator:
+							if (arr[i].isDivider) {
+								var sep = document.createElement("li");
+								sep.setAttribute("role", "separator");
+								sep.setAttribute("class", "divider");
+								li.appendChild(sep);
+							}
+							
+							var ic = arr[i].iconStyleClass==null?'':arr[i].iconStyleClass;
+							var sc = arr[i].styleClass==null?'':' '+arr[i].styleClass
+							li.setAttribute("class",sc);
+							//if we have an icon style class create div element for icon;
+							if (ic) {
+								a.innerHTML = '<div class="'+ic+'"></div> '+a.innerHTML
+							}			
+							
+							//if we have an image
+							
+							console.log(arr[i])							
+							if (arr[i].imageSrc) {
+								a.innerHTML = '<img class="'+arr[i].imageStyleClass+' img-icon" src="'+arr[i].imageSrc+'"></img> '+a.innerHTML
+							}
+							
+							
 							if (arr[i].menuItems) {
-								a.setAttribute("class", "dropdown-toggle");
+								a.setAttribute("class","dropdown-toggle");																						
 								a.setAttribute("data-toggle", "dropdown");
-								li.setAttribute("class", "dropdown dropdown-submenu");
+								li.setAttribute("class", "dropdown dropdown-submenu" +sc);
 								
 								//create ul elment to hold additional items								
 								var ul = document.createElement("ul");
@@ -53,6 +98,13 @@ angular.module('multilevelmenuMultilevelmenu', ['servoy']).directive('multilevel
 								//continue looping to get other possible sub items
 								loop(arr[i].menuItems, ul)
 							}
+							
+							
+							//if an item is disabled
+							if(!arr[i].enabled){
+								a.setAttribute("class", "disabled"+sc);
+							}
+							
 							if (el) {
 								el.appendChild(li);
 							}
@@ -60,7 +112,7 @@ angular.module('multilevelmenuMultilevelmenu', ['servoy']).directive('multilevel
 					}
 
 					//expand menu when selected if we have items
-					$('ul.dropdown-menu [data-toggle=dropdown]').on('click', function(event) {							
+					$('ul.dropdown-menu [data-toggle=dropdown]').on('click', function(event) {	
 							event.preventDefault();
 							event.stopPropagation();
 							$(this).parent().siblings().removeClass('open');
@@ -68,8 +120,14 @@ angular.module('multilevelmenuMultilevelmenu', ['servoy']).directive('multilevel
 						});
 					
 					//activate handler
-					$('a').on('click', function(event) {						
+					$('a').on('click', function(event) {		
+						if (event.target.className==='disabled') {
+							event.preventDefault();
+							event.stopPropagation();
+							return;
+						}
 						if ($scope.handlers.onMenuItemSelected){
+							//if item is disabled, return null;							
 							$scope.handlers.onMenuItemSelected(event.target.id)
 						}
 									

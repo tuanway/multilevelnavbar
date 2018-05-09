@@ -7,15 +7,24 @@
 	"libraries": [],
 	"model":
 	{
-		"menu"						: { "type": "MenuItem[]" },
-		"brandText"					: {"type": "tagstring", "default": ""}
+		"menu"						: {"type": "MenuItem[]" },
+		"brandText"					: {"type": "tagstring", "default": ""},
+		"brandIconStyleClass"		: {"type": "styleclass", "default": ""},
+		"brandImage"				: {"type": "media", "default": ""},
+		"brandImageStyleClass"		: {"type": "styleclass", "default": ""},
+		"styleClass"				: {"type": "styleclass" }
 	},
 	"types": {
 		"MenuItem": {
 			"itemId"							: {"type": "string"},
 			"menuItems"							: {"type": "MenuItem[]" },
 			"text"								: {"type": "tagstring"},
-			"enabled"							: {"type": "enabled", "default": true}
+			"enabled"							: {"type": "enabled", "default": true},
+			"isDivider"							: {"type": "boolean","default": false},
+			"styleClass"						: {"type": "styleclass" },
+			"iconStyleClass"					: {"type": "styleclass" },
+			"imageSrc"							: {"type": "media"},
+			"imageStyleClass"					: {"type": "styleclass"}
 		}
 	},
 	"handlers":

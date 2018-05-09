@@ -6,6 +6,7 @@
   				text: String=,
   				styleClass: String=,
   				iconStyleClass: String=,
+  				imageSrc:String=,
   				enabled: Boolean=,
   				data: Object=,
   				menuItems: Array=,
