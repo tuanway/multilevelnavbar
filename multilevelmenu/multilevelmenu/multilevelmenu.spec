@@ -35,10 +35,10 @@
 										            { "name" : "event", "type" : "JSEvent" }
 										        ],
 										        "returns" : "boolean"
-										  }
+										  }			  
 	},	
 	"api":
-	{		
+	{
 		"setRootMenuItems": 
 		{
 			"parameters": 
