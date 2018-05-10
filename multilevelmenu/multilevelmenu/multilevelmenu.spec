@@ -45,6 +45,36 @@
 			[
 				{	"name": "menuItems",	"type": "MenuItem[]" }
 			]
-		}}
+		},
+		"addMenuItem" :{
+			"parameters":[
+				{
+					"name": "menuItem",	
+					"type": "MenuItem"
+				},
+				{
+					"name": "menuItemId",	
+					"type": "object",
+					"optional" : true
+				},
+				{
+					"name": "index",
+					"type" : "int",
+					"optional" : true
+				}
+			],
+			"returns" : "boolean"
+		},
+		"removeMenuItem" :{
+			"parameters":[
+				{
+					"name": "menuItemId",	
+					"type": "object"
+				}
+			],
+			"returns" : "boolean"
+		}		
+		
+		}
 	
 }
