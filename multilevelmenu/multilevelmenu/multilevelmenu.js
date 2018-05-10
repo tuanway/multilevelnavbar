@@ -28,7 +28,7 @@ angular.module('multilevelmenuMultilevelmenu', ['servoy']).directive('multilevel
 					var menu = document.getElementById($scope.model.svyMarkupId);
 					console.log(menu)
 					var items = $scope.model.menu
-
+					if (!items) return;
 					//setup main items
 					for (var i = 0; i < items.length; i++) {
 						var li = document.createElement("li");
@@ -157,8 +157,17 @@ angular.module('multilevelmenuMultilevelmenu', ['servoy']).directive('multilevel
 					$scope.model.menuItems = [];
 				}
 
-				// wait that model is syncronized with the server
+				
 				$scope.$watch("model.svyMarkupId", function(newValue, oldValue) {
+						if (newValue) {
+							setTimeout(function() {
+									$scope.setupMenu();
+								}, 200);
+						}
+					});
+				
+				// wait that model is syncronized with the server
+				$scope.$watch("model.menu", function(newValue, oldValue) {
 						if (newValue) {
 							setTimeout(function() {
 									$scope.setupMenu();
